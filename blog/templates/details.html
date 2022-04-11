@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="row">
+        
+                <div class="col-lg-8">
+                    <!-- Post content-->
+                    <article>
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            <h3 class="fw-bolder mb-1">{{article.title}}</h3>
+                            <hr>
+                            <!-- Post meta content-->
+                            <div class="text-muted fst-italic mb-2">{{article.created_date}}</div>
+                            <hr>
+
+                        </header>
+                        <!-- Preview image figure-->
+                            {% if article.article_image %}
+                                <figure class="mb-4"><img class="img-fluid rounded" src="{{article.article_image.url}}" alt="..." /></figure>
+                
+                            {% endif %}
+                        
+                        <!-- Post content-->
+                        <section class="mb-5">
+                            <p class="fs-5 mb-4">{{article.content|safe}}</p>
+                            
+                        </section>
+                    </article>
+                     <section class="mb-5">
+                        <div class="card bg-light">
+                            <div class="card-body form-group">
+                                <!-- Comment form-->
+                                <form action="{% url 'article:comment' article.id %}"  method="post" class="mb-4">
+                                {% csrf_token %}
+                                <label for="formGroupExeampleInput">İsim</label>
+                                <input name="comment-author" type="text" class="form-control" placeholder="İsim">
+                                <label for="formGroupExeampleInput">İsim</label>
+                                <textarea name="comment-content" class="form-control" placeholder="Yorum Yazın"></textarea><br>
+                                <input type="submit" class="btn btn-info" value="Yorum Yap">
+                                </form>
+                                {% if comments %}
+                                    {% for comment in comments  %}
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                        <div class="ms-3">
+                                            <div class="fw-bold">{{comment.comment_author}}</div>
+                                            {{comment.comment_content}}
+                                        </div>
+                                    </div><br>
+                                    {% endfor %}
+                                    
+                                {% else %}
+                                {% endif %}
+                                
+                            </div>
+                        </div>
+                    </section>
+                </div>
+</div>
+
+{% endblock body %}
